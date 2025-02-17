@@ -1,11 +1,16 @@
 using UnityEngine;
 using Pico.Platform;
-using System.Threading.Tasks; // Asegúrate de importar el namespace del SDK de PICO.
+using System.Threading.Tasks; // Asegï¿½rate de importar el namespace del SDK de PICO.
+using Unity.XR.PXR;
 
 
 public class ChangeApp : MonoBehaviour
 {
     [SerializeField] string appID;
+
+    void Awake() {
+        PXR_Platform.InitializeSDK();
+    }
 
     public void boton()
     {
@@ -21,24 +26,24 @@ public class ChangeApp : MonoBehaviour
         try
         {
             // Opcional: Puedes definir opciones de lanzamiento si son necesarias.
-            ApplicationOptions options = null; // O crea las opciones según lo que necesites.
+            ApplicationOptions options = null; // O crea las opciones segï¿½n lo que necesites.
 
-            // Llamada a la función LaunchApp de manera asíncrona.
-            Message<string> result = await ApplicationService.LaunchAppByAppId(packageName, options).Async();
+            // Llamada a la funciï¿½n LaunchApp de manera asï¿½ncrona.
+            Message<string> result = await ApplicationService.LaunchApp(packageName, options).Async();
 
             // Comprueba el resultado.
             if (string.IsNullOrEmpty(result.Data))
             {
-                Debug.Log($"La aplicación con el paquete '{packageName}' se lanzó exitosamente.");
+                Debug.LogError($"La aplicaciï¿½n con el paquete '{packageName}' se lanzï¿½ exitosamente.");
                 //Application.Quit();
 
             } else
             {
-                Debug.LogWarning($"Error al lanzar la aplicación: {result}");
+                Debug.LogError($"Error al lanzar la aplicaciï¿½n: {result}");
             }
         } catch (System.Exception ex)
         {
-            Debug.LogError($"Ocurrió un error al intentar lanzar la aplicación: {ex.Message}");
+            Debug.LogError($"Ocurriï¿½ un error al intentar lanzar la aplicaciï¿½n: {ex.Message}");
         }
     }
 
